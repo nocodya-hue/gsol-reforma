@@ -1,7 +1,6 @@
-@font-face { font-family: 'Archivo'; src: url(../fonts/archivo-var.woff2) format('woff2'); font-weight: 100 900; font-stretch: 62% 125%; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Inter Tight'; src: url(../fonts/inter-tight-var.woff2) format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Newsreader'; src: url(../fonts/newsreader-var.woff2) format('woff2'); font-weight: 200 800; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Newsreader'; src: url(../fonts/newsreader-italic-var.woff2) format('woff2'); font-weight: 200 800; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Archivo'; src: url(../fonts/archivo-var.woff2) format('woff2'); font-weight: 300 800; font-stretch: 100% 125%; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Inter Tight'; src: url(../fonts/inter-tight-var.woff2) format('woff2'); font-weight: 400 650; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Newsreader'; src: url(../fonts/newsreader-italic-var.woff2) format('woff2'); font-weight: 300 500; font-style: italic; font-display: swap; }
 
 /* G·SOL Reformas Integrales (Valencia). Paleta de casa antigua rehabilitada: pizarra (tejados y forja), cal (paredes encaladas),
    piedra (muros) y el oro del sol del nombre como único acento. Titulares anchos en Archivo, matiz en Newsreader cursiva. */
@@ -20,6 +19,7 @@ html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--cab) + 12p
 html.lenis, html.lenis body { height: auto; }
 body { margin: 0; background: var(--cal); color: var(--pizarra); font: 400 17px/1.6 var(--txt); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 img, svg { display: block; max-width: 100%; }
+picture { display: contents; } /* la <img> se comporta como hija directa de su caja */
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--sol); outline-offset: 3px; }
@@ -119,6 +119,19 @@ body:has(.menu:not([hidden])) .cab .lg-letra { fill: #fff; }
 .hero__casa .ph { background: linear-gradient(0deg, rgba(21, 24, 27, .55), rgba(21, 24, 27, 0) 40%); }
 .hero__pie { position: absolute; z-index: 3; left: 0; right: 0; bottom: 22px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .hero__lugar { font: 500 13.5px/1 var(--txt); color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, .4); }
+/* entrada del hero con CSS: empieza en el primer pintado, sin esperar a que cargue el JS.
+   Las letras suben una a una; la casa y el cielo aparecen en cuanto terminan de bajar (clase «cargada») */
+@keyframes sube { from { opacity: 0; transform: translateY(70%); } }
+@keyframes aparece { from { opacity: 0; transform: translateY(16px); } }
+@keyframes llega-casa { from { opacity: 0; transform: translateY(5%) scale(1.04); } }
+@keyframes funde { from { opacity: 0; } }
+.js .gig { transform-box: fill-box; animation: sube 1.5s var(--suave) .1s backwards; }
+.js .gig:nth-child(2) { animation-delay: .2s; } .js .gig:nth-child(3) { animation-delay: .3s; }
+.js .hero__micro > *, .js .hero__pie { animation: aparece 1s var(--suave) .45s backwards; }
+.js .hero__micro > :nth-child(2) { animation-delay: .52s; } .js .hero__micro > :nth-child(3) { animation-delay: .59s; } .js .hero__pie { animation-delay: .7s; }
+.js .hero__casa img:not(.cargada), .js .hero__cielo img:not(.cargada) { opacity: 0; }
+.js .hero__casa img.cargada { animation: llega-casa 1.6s var(--suave) backwards; }
+.js .hero__cielo img.cargada { animation: funde .9s ease backwards; }
 
 /* sobre nosotros (tipo «Stunning architecture…»): frase grande con cursivas, casco recortado y cifras */
 .intro { padding: clamp(80px, 10vw, 140px) 0 clamp(60px, 7vw, 100px); background: var(--blanco); overflow: hidden; }

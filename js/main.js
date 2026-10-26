@@ -129,16 +129,14 @@
     });
   } else addEventListener('scroll', function () { cabecera(scrollY); }, { passive: true });
 
-  // ---------- hero: las letras suben desde detrás de la casa y, al bajar, se hunden más despacio que ella (profundidad) ----------
+  // ---------- hero: al bajar, el nombre se hunde más despacio que la casa (profundidad). La entrada la hace el CSS ----------
   if (hero) {
-    var casa = hero.querySelector('[data-casa]'), gig = hero.querySelector('[data-gigante]');
-    g.from(hero.querySelectorAll('.gig'), { yPercent: 70, opacity: 0, duration: 1.6, ease: 'expo.out', stagger: .1, delay: .15 });
-    g.from(casa, { yPercent: 6, scale: 1.04, duration: 2, ease: 'expo.out' });
-    g.from('.hero__micro > *, .hero__pie', { y: 16, opacity: 0, duration: 1, ease: 'expo.out', stagger: .07, delay: .5 });
+    var casaImg = hero.querySelector('[data-casa] img'), gig = hero.querySelector('[data-gigante]');
     var tl = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
     g.to(gig, { yPercent: 70, ease: 'none', scrollTrigger: tl });
-    g.to(casa, { yPercent: 8, scale: 1.06, ease: 'none', scrollTrigger: tl });
-    g.to(hero.querySelector('.hero__cielo'), { yPercent: 18, ease: 'none', scrollTrigger: tl });
+    if (casaImg) g.to(casaImg, { yPercent: 8, scale: 1.06, ease: 'none', scrollTrigger: tl });
+    var cieloImg = hero.querySelector('.hero__cielo img');
+    if (cieloImg) g.to(cieloImg, { yPercent: 18, ease: 'none', scrollTrigger: tl });
   }
 
   // ---------- titulares por líneas ----------
